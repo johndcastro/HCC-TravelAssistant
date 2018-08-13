@@ -45,6 +45,12 @@ namespace Microsoft.Bot.Sample.LuisBot
                 // Handle conversation state changes, like members being added and removed
                 // Use Activity.MembersAdded and Activity.MembersRemoved and Activity.Action for info
                 // Not available in all channels
+
+                var reply = message.CreateReply("Hello, welcome to the Travel Assistant, what would you like to do today?");
+
+                ConnectorClient connector = new ConnectorClient(new Uri(message.ServiceUrl));
+                connector.Conversations.ReplyToActivity(reply);
+
             }
             else if (message.Type == ActivityTypes.ContactRelationUpdate)
             {
