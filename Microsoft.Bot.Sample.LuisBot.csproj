@@ -175,10 +175,10 @@
     <Content Include="Global.asax" />
     <Content Include="Resources\Airports.xml" />
     <Content Include="Web.config" />
-    <EmbeddedResource Include="Properties\Resources.resx">
+    <Compile Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
@@ -203,6 +203,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+    <None Include="Web.config.nogit" />
+    <None Include="Web.config.Debug.nogit">
+      <DependentUpon>Web.config.nogit</DependentUpon>
+    </None>
+    <None Include="Web.config.Release.nogit">
+      <DependentUpon>Web.config.nogit</DependentUpon>
+    </None>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
