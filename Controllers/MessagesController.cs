@@ -7,6 +7,7 @@ using Microsoft.Bot.Builder.Dialogs;
 using System.Web.Http.Description;
 using System.Net.Http;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Microsoft.Bot.Sample.LuisBot
 {
@@ -46,10 +47,13 @@ namespace Microsoft.Bot.Sample.LuisBot
                 // Use Activity.MembersAdded and Activity.MembersRemoved and Activity.Action for info
                 // Not available in all channels
 
-                var reply = message.CreateReply("Hello, welcome to the Travel Assistant, what would you like to do today?");
+                if (message.MembersAdded.Any(o => o.Id == message.Recipient.Id))
+                {
+                    var reply = message.CreateReply("Hello and welcome to the Hitachi Consulting travel assistant! What can I help you with today?");
+                    ConnectorClient connector = new ConnectorClient(new Uri(message.ServiceUrl));
+                    connector.Conversations.ReplyToActivity(reply);
 
-                ConnectorClient connector = new ConnectorClient(new Uri(message.ServiceUrl));
-                connector.Conversations.ReplyToActivity(reply);
+                }
 
             }
             else if (message.Type == ActivityTypes.ContactRelationUpdate)
