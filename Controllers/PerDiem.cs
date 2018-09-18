@@ -73,13 +73,13 @@ namespace LuisBot.Controllers
                     }
                     else
                     {
-                        retres = 0.02;
+                        retres = 2.02;
                     }
                 }
             }
             catch
             {
-                retres = 0.01;
+                retres = 3.01;
             }
             return retres;
         }
@@ -129,7 +129,7 @@ namespace LuisBot.Controllers
             else if (inadd.Locality != null)
             {
                 Double testcity = await GetMealCity(fiscal, inadd.Locality, inadd.AdminDistrict);
-                if (testcity > 555.55)
+                if (testcity < 5.00)
                 {
                     retres = await GetMealState(fiscal, inadd.AdminDistrict);
                 }
