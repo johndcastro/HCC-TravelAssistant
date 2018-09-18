@@ -73,13 +73,13 @@ namespace LuisBot.Controllers
                     }
                     else
                     {
-                        retres = 9999.99;
+                        retres = 0.02;
                     }
                 }
             }
             catch
             {
-                retres = 8888.88;
+                retres = 0.01;
             }
             return retres;
         }
