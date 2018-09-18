@@ -34,6 +34,8 @@ namespace LuisBot.Controllers
         {
             List<HeroCard> aircards = new List<HeroCard>();
             var cmessage = context.MakeMessage();
+            cmessage.AttachmentLayout = AttachmentLayoutTypes.Carousel;
+            
             foreach (airport aport in fports)
             {
                 Location aportloc = await BingQuery.GetRevGeo(aport.longitude, aport.latitude);

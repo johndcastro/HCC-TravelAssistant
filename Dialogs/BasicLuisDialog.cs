@@ -139,16 +139,7 @@ namespace Microsoft.Bot.Sample.LuisBot
             }
             else
             {
-                string imageurl = await BingQuery.GetImageURL(storloc);
-                HeroCard addcard = await CardController.AddressCard(storloc, imageurl);
-                Attachment adattach = addcard.ToAttachment();
-                var cmessage = context.MakeMessage();
-                cmessage.Attachments.Add(adattach);
-                await context.PostAsync(cmessage);
-                Double mealrate = await PQuery.GetMealLoc(storloc.Address);
-                string drate = String.Format("{0:C}", Convert.ToInt32(mealrate));
-                string dtrate = String.Format("{0:C}", Convert.ToInt32((mealrate *.75)));
-                await context.PostAsync($"Daily meal rate: Full Day - {drate} and Travel Day - {dtrate}");
+                await ShowPerDiem(context, storloc);
                 context.Wait(MessageReceived);
 
             }
@@ -167,16 +158,7 @@ namespace Microsoft.Bot.Sample.LuisBot
                 }
                 else
                 {
-                    string imageurl = await BingQuery.GetImageURL(storloc);
-                    HeroCard addcard = await CardController.AddressCard(storloc, imageurl);
-                    Attachment adattach = addcard.ToAttachment();
-                    var cmessage = context.MakeMessage();
-                    cmessage.Attachments.Add(adattach);
-                    await context.PostAsync(cmessage);
-                    Double mealrate = await PQuery.GetMealLoc(storloc.Address);
-                    string drate = String.Format("{0:C}", Convert.ToInt32(mealrate));
-                    string dtrate = String.Format("{0:C}", Convert.ToInt32((mealrate * .75)));
-                    await context.PostAsync($"Daily meal rate: Full Day - {drate} and Travel Day - {dtrate}");
+                    await ShowPerDiem(context, storloc);
                     context.Wait(MessageReceived);
 
                 }
@@ -187,6 +169,30 @@ namespace Microsoft.Bot.Sample.LuisBot
                 context.Wait(MessageReceived);
             }
         }
+
+        private async Task ShowPerDiem(IDialogContext context, Location storloc)
+        {
+            string imageurl = await BingQuery.GetImageURL(storloc);
+            HeroCard addcard = await CardController.AddressCard(storloc, imageurl);
+            Attachment adattach = addcard.ToAttachment();
+            var cmessage = context.MakeMessage();
+            cmessage.Attachments.Add(adattach);
+            await context.PostAsync(cmessage);
+
+            if (storloc.Address.CountryRegionIso2.ToLower().Contains("us"))
+            {
+                Double mealrate = await PQuery.GetMealLoc(storloc.Address);
+                string drate = String.Format("{0:C}", Convert.ToInt32(mealrate));
+                string dtrate = String.Format("{0:C}", Convert.ToInt32((mealrate * .75)));
+                await context.PostAsync($"Daily meal rate: Full Day - {drate} and Travel Day - {dtrate}");
+            }
+            else
+            {
+                await context.PostAsync("Sorry international locations are not currently supported for Per Diem!");
+            }
+
+        }
+
 
         [LuisIntent("ChangeLocation")]
         public async Task ChangeLocationIntent(IDialogContext context, LuisResult result)
