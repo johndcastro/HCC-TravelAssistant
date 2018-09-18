@@ -175,6 +175,7 @@ namespace Microsoft.Bot.Sample.LuisBot
                     await context.PostAsync(cmessage);
                     Double mealrate = await PQuery.GetMealLoc(storloc.Address);
                     string drate = String.Format("{0:C}", Convert.ToInt32(mealrate));
+                    string dtrate = String.Format("{0:C}", Convert.ToInt32((mealrate * .75)));
                     await context.PostAsync($"Daily meal rate: Full Day - {drate} and Travel Day - {dtrate}");
                     context.Wait(MessageReceived);
 
